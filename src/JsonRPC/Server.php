@@ -326,6 +326,27 @@ class Server
                 )),
                 $this->payload
             );
+        } 
+        catch (Exception $e) {
+
+            //An error code from -32000 to -32099 is a custom "server error".
+            if(-31999 > $e->getCode() && $e->getCode() > -32100){
+                $code = $e->getCode();
+                $message = $e->getMessage(); //Server error
+            } 
+            //A general exception is an "internal error".
+            else {
+                $code = -32603;
+                $message = $e->getMessage(); //Internal error
+            }
+
+            return $this->getResponse(array(
+                'error' => array(
+                    'code' => $code,
+                    'message' => $message
+                )),
+                $this->payload
+            );
         }
     }
 

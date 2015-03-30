@@ -5,6 +5,10 @@ namespace JsonRPC;
 use RuntimeException;
 use BadFunctionCallException;
 use InvalidArgumentException;
+use Exception;
+
+class InvalidJsonRpcFormat extends Exception {};
+class InvalidJsonFormat extends Exception {};
 
 /**
  * JsonRPC client class
@@ -262,15 +266,21 @@ class Client
      * Throw an exception according the RPC error
      *
      * @access public
-     * @param  integer    $code
+     * @param  array    error array containing 'code' and 'message'.
      */
     public function handleRpcErrors($error)
     {
         switch ($error['code']) {
+            case -32700:
+                throw new InvalidJsonFormat('Invalid JSON was received by the server: '. $error['message');
+            case -32600:
+                throw new InvalidJsonRpcFormat('The JSON sent is not a valid Request object: '. $error['message');
             case -32601:
                 throw new BadFunctionCallException('Procedure not found: '. $error['message']);
             case -32602:
                 throw new InvalidArgumentException('Invalid arguments: '. $error['message']);
+            case -32603:
+                throw new Exception('Internal Error: '. $error['message']);
             default:
                 throw new RuntimeException('Invalid request/response: '. $error['message'], $error['code']);
         }
