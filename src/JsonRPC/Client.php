@@ -272,9 +272,9 @@ class Client
     {
         switch ($error['code']) {
             case -32700:
-                throw new InvalidJsonFormat('Invalid JSON was received by the server: '. $error['message');
+                throw new InvalidJsonFormat('Invalid JSON was received by the server: '. $error['message']);
             case -32600:
-                throw new InvalidJsonRpcFormat('The JSON sent is not a valid Request object: '. $error['message');
+                throw new InvalidJsonRpcFormat('The JSON sent is not a valid Request object: '. $error['message']);
             case -32601:
                 throw new BadFunctionCallException('Procedure not found: '. $error['message']);
             case -32602:
