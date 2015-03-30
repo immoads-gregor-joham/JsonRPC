@@ -280,7 +280,7 @@ class Client
             case -32602:
                 throw new InvalidArgumentException('Invalid arguments: '. $error['message']);
             case -32603:
-                throw new Exception('Internal Error: '. $error['message']);
+                throw new RuntimeException('Internal Error: '. $error['message']);
             default:
                 throw new RuntimeException('Invalid request/response: '. $error['message'], $error['code']);
         }
