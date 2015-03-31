@@ -326,12 +326,20 @@ class Server
                 )),
                 $this->payload
             );
-        } 
-        catch (RuntimeException $e) {
-
+        }
+        //catch any other exception
+        catch (Exception $e) {
+            
+            $code = $e->getCode();
+            
+            //no code triggers Json RPC default code
+            if(0 == $code){
+                $code = -32603;
+            }
+            
             return $this->getResponse(array(
                 'error' => array(
-                    'code' => -32603,
+                    'code' => $code,
                     'message' => $e->getMessage()
                 )),
                 $this->payload
